@@ -9,12 +9,9 @@ import 'package:get/get.dart';
 
 import '../services/firestore_user.dart';
 
-class AuthViewModel extends GetxController{
+class AuthViewModel extends GetxController {
+  String? email, password, name;
 
-
-    String? email, password, name;
-
- 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
@@ -22,29 +19,6 @@ class AuthViewModel extends GetxController{
     super.onInit();
     // _user!.bindStream(_firebaseAuth.authStateChanges());
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
 
   Future<bool> signIn(
       {required BuildContext context,
@@ -58,7 +32,7 @@ class AuthViewModel extends GetxController{
           return true;
         } else {
           await signOut();
-          
+
           return false;
         }
       }
@@ -71,27 +45,26 @@ class AuthViewModel extends GetxController{
     return false;
   }
 
-  Future<bool> createAccount(
-      {required BuildContext context,
-      required String email,
-      required String password,
-      required String name,
-      
-      }) async {
+  Future<bool> createAccount({
+    required BuildContext context,
+    required String email,
+    required String password,
+    required String name,
+  }) async {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
-           final User? user = _firebaseAuth.currentUser;
-           final uid = user!.uid;
-            FirebaseFirestore.instance.collection('users').doc(uid).set(
+      final User? user = _firebaseAuth.currentUser;
+      final uid = user!.uid;
+      FirebaseFirestore.instance.collection('users').doc(uid).set(
         {
           'id': uid,
           'email': email,
-          'name':name,
+          'name': name,
           'createAt': Timestamp.now(),
         },
       );
-           
+
       userCredential.user?.sendEmailVerification();
       return true;
     } on FirebaseAuthException catch (e) {
@@ -101,7 +74,6 @@ class AuthViewModel extends GetxController{
     }
     return false;
   }
- 
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
@@ -110,13 +82,12 @@ class AuthViewModel extends GetxController{
   bool loggedIn() => _firebaseAuth.currentUser != null;
 
   StreamSubscription<User?> checkUserStates(userAuthStates) {
-     return  _firebaseAuth.authStateChanges().listen((event) {
+    return _firebaseAuth.authStateChanges().listen((event) {
       userAuthStates(loggedIn: event != null);
     });
   }
 
-
-     void saveUser(UserCredential userCredential) async {
+  void saveUser(UserCredential userCredential) async {
     UserModel _userModel = UserModel(
       userId: userCredential.user!.uid,
       email: userCredential.user!.email!,
@@ -125,7 +96,8 @@ class AuthViewModel extends GetxController{
     FirestoreUser().addUserToFirestore(_userModel);
     // saveUserLocal(_userModel);
   }
-    Future<bool> resetPassword(
+
+  Future<bool> resetPassword(
       {required String email, required BuildContext context}) async {
     await _firebaseAuth.sendPasswordResetEmail(email: email);
     return true;
@@ -133,7 +105,6 @@ class AuthViewModel extends GetxController{
 
   void _controlException(
       BuildContext context, FirebaseAuthException exception) {
-   
     switch (exception.code) {
       case 'invalid-email':
         break;

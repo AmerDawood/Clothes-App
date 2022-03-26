@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_project/core/services/firestore_orders.dart';
 import 'package:firebase_project/core/viewmodel/cart_viewmodel.dart';
 import 'package:firebase_project/screens/app/app_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/parser.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 class CartView extends StatefulWidget {
@@ -14,6 +16,9 @@ class _CartViewState extends State<CartView> {
   int _value = 1;
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+    final User? user = _firebaseAuth.currentUser;
+    final uid = user!.uid;
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 33, 79, 116).withOpacity(0.5),
@@ -250,13 +255,11 @@ class _CartViewState extends State<CartView> {
                                                   // _value = value;
                                                 });
                                               }),
-                                         
+
                                          Padding(
                                             padding: const EdgeInsets.only(
                                                 right: 20),
                                             child: TextField(
-                                              // controller:
-                                              //     _emailEditingController,
                                               decoration: InputDecoration(
                                                 enabledBorder:
                                                     OutlineInputBorder(
@@ -285,7 +288,7 @@ class _CartViewState extends State<CartView> {
                                               ),
                                             ),
                                           ),
-                                           Padding(
+                                         Padding(
                                             padding: const EdgeInsets.only(
                                                 right: 20),
                                             child: TextField(
@@ -324,9 +327,35 @@ class _CartViewState extends State<CartView> {
                                                 left: 20,
                                                 right: 20,
                                                 bottom: 10,
-                                                top: 10),
+                                                top: 10
+                                            ),
                                             child: ElevatedButton(
-                                              onPressed: () {},
+
+                                              onPressed: () {
+                                                FirestoreOrders().addOrdersToFirestore(
+                                                  Price: '${controller.totalPrice.toString()}',
+                                                  UserID: '$uid'
+                                                );
+                                                // FirebaseFirestore.instance
+                                                //     .collection('orders')
+                                                //     .doc('YgGXUyxdfIU2sgkIU3aF')
+                                                //     .update({
+                                                //   'orders': FieldValue
+                                                //       .arrayUnion(
+                                                //     [
+                                                //       {
+                                                //         'time': Timestamp.now(),
+                                                //         'UserID': '$uid',
+                                                //         'Total Price': '${controller.totalPrice.toString()}',
+                                                //
+                                                //       }
+                                                //     ],
+                                                //   ),
+                                                //
+                                                // },
+                                                // );
+
+                                              },
                                               style: ElevatedButton.styleFrom(
                                                 primary: Color.fromRGBO(
                                                     50, 68, 82, 1),
@@ -378,5 +407,8 @@ class _CartViewState extends State<CartView> {
               ),
       ),
     );
+  }
+  void showDialogBay(){
+
   }
 }
