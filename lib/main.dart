@@ -34,27 +34,23 @@ class _MyAppState extends State<MyApp> {
             : Size(812, 375),
         builder: () => GetMaterialApp(
           initialBinding: Binding(),
-          // theme: ThemeData(
-          //   fontFamily: 'SourceSansPro',
-          // ),
-          home: AppScreen(),
+          // home: AppScreen(),
           debugShowCheckedModeBanner: false,
           theme: ThemeService().lightTheme,
           darkTheme: ThemeService().darkTheme,
           themeMode: ThemeService().getThemeMode(),
+           initialRoute: '/launch_screen',
+      routes: {
+        '/login_screen':(context)=>LoginScreen(),
+        '/launch_screen':(context)=>LaunchScreen(),
+        '/app_screen':(context)=>AppScreen(),
+      },
           
         ),
       ),
     );
       // debugShowCheckedModeBanner: false,
-      // initialRoute: '/app_screen',
-      // routes: {
-      //   '/login_screen':(context)=>LoginScreen(),
-      //   '/register_screen':(context)=>RegisterScreen(),
-      //   '/launch_screen':(context)=>LaunchScreen(),
-      //   '/forget_password':(context)=>ForgetPassword(),
-      //   '/app_screen':(context)=>AppScreen(),
-      // },
+     
     
   }
 }

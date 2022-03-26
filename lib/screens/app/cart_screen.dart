@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_project/core/services/firestore_orders.dart';
 import 'package:firebase_project/core/viewmodel/cart_viewmodel.dart';
 import 'package:firebase_project/screens/app/app_screen.dart';
+import 'package:firebase_project/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
@@ -12,16 +13,17 @@ class CartView extends StatefulWidget {
   State<CartView> createState() => _CartViewState();
 }
 
-class _CartViewState extends State<CartView> {
+class _CartViewState extends State<CartView>with Helpers {
   int _value = 1;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
     final User? user = _firebaseAuth.currentUser;
     final uid = user!.uid;
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color.fromARGB(255, 33, 79, 116).withOpacity(0.5),
+        backgroundColor: Color.fromARGB(255, 33, 79, 116).withOpacity(0.5),
         title: Text(
           'Cart ',
           style: TextStyle(
@@ -203,193 +205,47 @@ class _CartViewState extends State<CartView> {
                         Padding(
                           padding: const EdgeInsets.only(right: 20),
                           child: ElevatedButton(
-                            onPressed: () {
-                              showDialog(
+                            onPressed: () async {
+                              final value = await showDialog<bool>(
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: Text(
-                                        'Card Info',
-                                        style: TextStyle(
-                                          color: Color.fromARGB(255, 1, 26, 46),
-                                          fontSize: 21,
-                                        ),
-                                      ),
-                                      content: Column(
-                                        children: [
-                                          Text(
-                                              'Total amount with delivery fee'),
-                                          SizedBox(
-                                            height: 20,
+                                      content: Text(
+                                          'Are you sure you want to Buy this products? The Price is :  ${controller.totalPrice} \$'
                                           ),
-                                          Text(
-                                            '${controller.totalPrice.toString()} \$',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 1, 26, 46),
-                                            ),
+                                          
+                                      actions:[
+                                        ElevatedButton(
+                                          child: Text('No',
+                                          style: TextStyle(
+                                            color: Colors.white,
                                           ),
-                                          SizedBox(
-                                            height: 20,
                                           ),
-                                          DropdownButton(
-                                              value: _value,
-                                              items: [
-                                                DropdownMenuItem(
-                                                  child: Text("Visa"),
-                                                  value: 1,
-                                                ),
-                                                DropdownMenuItem(
-                                                  child: Text("Paypal"),
-                                                  value: 2,
-                                                ),
-                                                DropdownMenuItem(
-                                                    child: Text("Cridet card"),
-                                                    value: 3),
-                                                DropdownMenuItem(
-                                                    child: Text("None above"),
-                                                    value: 4)
-                                              ],
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  // _value = value;
-                                                });
-                                              }),
-
-                                         Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: TextField(
-                                              decoration: InputDecoration(
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                    width: 1,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                hintText: 'PIN Number',
-                                                prefixIcon:
-                                                    const Icon(Icons.card_travel_sharp),
-                                                labelStyle: const TextStyle(
-                                                  // fontSize: 20,
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                    width: 1,
-                                                    color: Colors.blue,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                              ),
-                                            ),
+                                           style: ElevatedButton.styleFrom(
+                                            primary:Color.fromARGB(255, 1, 26, 46),
                                           ),
-                                         Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: TextField(
-                                              // controller:
-                                              //     _emailEditingController,
-                                              decoration: InputDecoration(
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                    width: 1,
-                                                    color: Colors.grey,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                hintText: 'CVV',
-                                                prefixIcon:
-                                                    const Icon(Icons.card_travel_sharp),
-                                                labelStyle: const TextStyle(
-                                                  // fontSize: 20,
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderSide: const BorderSide(
-                                                    width: 1,
-                                                    color: Colors.blue,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 20,
-                                                right: 20,
-                                                bottom: 10,
-                                                top: 10
-                                            ),
-                                            child: ElevatedButton(
-
-                                              onPressed: () {
-                                                FirestoreOrders().addOrdersToFirestore(
-                                                  Price: '${controller.totalPrice.toString()}',
-                                                  UserID: '$uid'
-                                                );
-                                                // FirebaseFirestore.instance
-                                                //     .collection('orders')
-                                                //     .doc('YgGXUyxdfIU2sgkIU3aF')
-                                                //     .update({
-                                                //   'orders': FieldValue
-                                                //       .arrayUnion(
-                                                //     [
-                                                //       {
-                                                //         'time': Timestamp.now(),
-                                                //         'UserID': '$uid',
-                                                //         'Total Price': '${controller.totalPrice.toString()}',
-                                                //
-                                                //       }
-                                                //     ],
-                                                //   ),
-                                                //
-                                                // },
-                                                // );
-
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                primary: Color.fromRGBO(
-                                                    50, 68, 82, 1),
-                                                minimumSize: const Size(
-                                                    double.infinity, 30),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                              ),
-                                              child: const Text(
-                                                'CONTINUE',
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                            onPressed: () {
-                                              //
-                                            },
-                                            child: Text('Close')),
-                                        TextButton(
                                           onPressed: () {
                                             Navigator.pop(context);
-                                            //
                                           },
-                                          child: Text('HelloWorld!'),
-                                        )
+                                        ),
+                                        ElevatedButton(
+                                          child: Text('Confirm',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),),
+                                          style: ElevatedButton.styleFrom(
+                                            primary:Color.fromARGB(255, 1, 26, 46),
+                                          ),
+                                          onPressed: () {
+                                           FirestoreOrders().addOrdersToFirestore(
+                                             UserID:uid,
+                                              Price: '${controller.totalPrice.toString()} \$'
+                                              );
+                                              showSnackBar(context: context, message: 'Add order Successfely',error: false);
+                                              Navigator.pop(context);
+                                           
+                                          },
+                                        ),
                                       ],
                                     );
                                   });
@@ -408,7 +264,45 @@ class _CartViewState extends State<CartView> {
       ),
     );
   }
-  void showDialogBay(){
 
+  void showDialogBay() {}
+}
+
+class TextFieldCart extends StatelessWidget {
+  final String text;
+  final IconData icon;
+
+  TextFieldCart({
+    required this.icon,
+    required this.text,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20, left: 20),
+      child: TextField(
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              width: 1,
+              color: Colors.grey,
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          hintText: text,
+          prefixIcon: Icon(icon),
+          labelStyle: const TextStyle(
+              // fontSize: 20,
+              ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              width: 1,
+              color: Colors.blue,
+            ),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    );
   }
 }

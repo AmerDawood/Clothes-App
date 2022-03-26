@@ -103,7 +103,11 @@ class _ProductsScreenState extends State<ProductsScreen> with Helpers {
                           Expanded(
                             child: IconButton(
                               onPressed: () {
-                             
+                              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                                return CartView();
+                              },
+                              ),
+                              );
                               },
                               icon: SvgPicture.asset(
                                 'images/shopping-bag.svg',
@@ -114,7 +118,7 @@ class _ProductsScreenState extends State<ProductsScreen> with Helpers {
                           Expanded(
                             child: IconButton(
                               onPressed: () {
-                                
+                                ////
                               },
                               icon: SvgPicture.asset(
                                 'images/chat.svg',
@@ -124,7 +128,9 @@ class _ProductsScreenState extends State<ProductsScreen> with Helpers {
                           ),
                           Expanded(
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                ////
+                              },
                               icon: SvgPicture.asset(
                                 'images/heart.svg',
                                 height: 30,

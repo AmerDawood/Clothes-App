@@ -214,6 +214,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen>with Helpers
                             productId: widget._similarProduct.similarProductId,
                           ),
                         );
+                        showSnackBar(context: context, message: 'Add product to cart Successfely',error: false);
                       }),
                     ))
                             
