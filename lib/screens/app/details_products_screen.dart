@@ -205,7 +205,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen>with Helpers
                           ),
                           ),
                         ),
-                        onPressed:() {
+                        onPressed:(){
                         controller.addProduct(
                           CartModel(
                             name: widget._similarProduct.name,

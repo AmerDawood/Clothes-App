@@ -36,9 +36,9 @@ class _MyAppState extends State<MyApp> {
           initialBinding: Binding(),
           // home: AppScreen(),
           debugShowCheckedModeBanner: false,
-          theme: ThemeService().lightTheme,
-          darkTheme: ThemeService().darkTheme,
-          themeMode: ThemeService().getThemeMode(),
+          // theme: ThemeService().lightTheme,
+          // darkTheme: ThemeService().darkTheme,
+          // themeMode: ThemeService().getThemeMode(),
            initialRoute: '/launch_screen',
       routes: {
         '/login_screen':(context)=>LoginScreen(),

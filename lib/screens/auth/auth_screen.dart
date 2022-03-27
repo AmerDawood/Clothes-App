@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen>
                   opacity: 0.89,
                   child: Container(
                     width: 330,
-                    height: 310,
+                    height: 320,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(25)),
@@ -296,7 +296,38 @@ class _LoginScreenState extends State<LoginScreen>
                                             icon: Icons.lock,
                                           ),
                                           SizedBox(
-                                            height: 10,
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.transparent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Image.network('https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png'),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.transparent,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                   child: Image.network('https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Facebook.svg/640px-Facebook.svg.png'),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -378,7 +409,7 @@ class _LoginScreenState extends State<LoginScreen>
         },
       ));
     } else {
-      //  showSnackBar(context: context, message: 'ERROR');
+       showSnackBar(context: context, message: 'SOMETHING ERROR',error: true);
     }
   }
 
@@ -406,12 +437,13 @@ class _LoginScreenState extends State<LoginScreen>
       name: _nameEditingController.text,
     );
     if (states) {
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) {
-          return AppScreen();
-        },
-      ));
+      // Navigator.push(context, MaterialPageRoute(
+      //   builder: (context) {
+      //     return AppScreen();
+      //   },
+      // )
+      // );
+      showSnackBar(context: context, message: 'Go to login screen');
     }
   }
 }
-

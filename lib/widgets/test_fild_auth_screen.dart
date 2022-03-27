@@ -13,7 +13,7 @@ class TextFildInAuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 20),
+      padding: const EdgeInsets.only(right: 0),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
@@ -28,6 +28,7 @@ class TextFildInAuthScreen extends StatelessWidget {
           prefixIcon: Icon(icon),
           labelStyle: const TextStyle(
             fontSize: 20,
+            color: Colors.green,
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(
