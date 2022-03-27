@@ -18,9 +18,9 @@
 
 
  Features :
-Sign-In, Sign-Up and LogOut using Email & Password / Google Account / Facebook Account.
-Add/Remove Products to/from Cart.
-Change quantity of products in the cart.
+<p>Sign-In, Sign-Up and LogOut using Email & Password / Google Account / Facebook Account. </p>
+<p>Add/Remove Products to/from Cart.</p>
+<p>Change quantity of products in the cart.</p>
 Check out your Cart and Make an Order.
 Check your recent orders at Order History.
 Using Responsive UI.
